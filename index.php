@@ -44,10 +44,12 @@ include_once 'views/header.php';
                         <p><strong>First name: </strong><?=$employee['cFirstName'] ?></p>
                         <p><strong>Last name: </strong><?=$employee['cLastName'] ?></p>
                         <p><strong>Birth date: </strong><?=$employee['dBirth'] ?></p>
-                        <p><a href="view.php?id=<?=$employee['nEmployeeID'] ?>">View details</a></p>
+                        <br>
+                        <button><a href="view.php?id=<?=$employee['nEmployeeID'] ?>">View details</a></button>
+                        <button><a href="edit.php?id=<?=$employee['nEmployeeID'] ?>">Edit details</a></button>
                     </article>
                 <?php endforeach; ?>
-            </section>
+            </section>  
         <?php endif; ?>
     </main>
 <?php include_once 'views/footer.php'; ?>

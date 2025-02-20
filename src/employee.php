@@ -70,6 +70,7 @@ function getEmployeeByID(PDO $pdo, int $employeeID): array|false
 {
     $sql =<<<SQL
         SELECT 
+            employee.nEmployeeID AS employee_id,
             employee.cFirstName AS first_name, 
             employee.cLastName AS last_name, 
             employee.cEmail AS email, 
@@ -125,7 +126,7 @@ function validateEmployee($employee): array|bool {
 /**
  * It inserts a new employee in the database
  * @param $pdo A PDO database connection
- * @param $employeeID An associative array with employee data
+ * @param $employee An associative array with employee data
  * @return true if the insert was succesful,
  *         or false if there was an error
  */
@@ -152,4 +153,40 @@ function createEmployee(PDO $pdo, array $employee): bool {
         logText("Error inserting a new employee: ", $e);
         return false;
     }
+}
+
+/**
+ * It updates an employee in the database
+ * @param $pdo A PDO database connection
+ * @param $employee An associative array with employee data
+ * @return true if the insert was succesful,
+ *         or false if there was an error
+ */
+function updateEmployee(PDO $pdo, array $employee): bool {
+    $sql = <<<SQL
+        UPDATE employee 
+        SET 
+            cFirstName = :firstName,
+            cLastName = :lastName,
+            cEmail = :email,
+            dBirth = :birth,
+            nDepartmentID = :department
+        WHERE nEmployeeID = :id
+    SQL;
+
+    try {
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(":firstName", $employee["first_name"]);
+        $stmt->bindValue(":lastName", $employee["last_name"]);
+        $stmt->bindValue(":email", $employee["email"]);
+        $stmt->bindValue(":birth", $employee["birth_date"]);
+        $stmt->bindValue(":department", $employee["department"]);
+        $stmt->bindValue(":id", $employee["id"]);
+        
+        return $stmt->execute();
+    } catch (PDOException $e) {
+        logText("Error updating employee: ", $e->getMessage());
+        return false;
+    }
+
 }
