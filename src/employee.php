@@ -120,6 +120,8 @@ function validateEmployee($employee): array|bool {
         $validationsErrors[] = "Invalid email format.";
     }
 
+
+
     return $validationsErrors;
 }
 
@@ -188,5 +190,28 @@ function updateEmployee(PDO $pdo, array $employee): bool {
         logText("Error updating employee: ", $e->getMessage());
         return false;
     }
+}
 
+/**
+ * Deletes an employee record from the database.
+ *
+ * @param PDO $pdo
+ * @param array $employee An array where we get employee on index [0] with an 'id' property.
+ * @return bool True on success, false on failure.
+ */
+function deleteEmployee(PDO $pdo, int $employeeID): bool {
+
+    $sql = <<<SQL
+        DELETE FROM employee WHERE nEmployeeID = :id
+    SQL;
+
+    try {
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':id', $employeeID, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    } catch (PDOException $e) {
+        LogText("Error deleting employee: ", $e->getMessage());
+        return false;
+    }
 }
