@@ -4,11 +4,12 @@ require_once 'src/employee.php';
 
 $searchText = trim($_GET['search'] ?? '');
 
-$pdo = connect();
+$employee = new Employee();
+
 if ($searchText === '') {
-    $employees = getAllEmployees($pdo);
+    $employees = $employee->getAllEmployees();
 } else {
-    $employees = searchEmployees($pdo, $searchText);
+    $employees = $employee->searchEmployees($searchText);
 }
 if (!$employees) {
     $errorMessage = 'There was an error while retrieving the list of employees.';
@@ -16,7 +17,7 @@ if (!$employees) {
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($_POST["id"])) {
     $employeeID = $_POST["id"] ?? "";
-    $employee = deleteEmployee($pdo, $employeeID);
+    $employee = $employee->deleteEmployee($employeeID);
     header("Location: index.php");
     exit;
 }

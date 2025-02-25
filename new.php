@@ -3,20 +3,21 @@
 require_once 'src/employee.php';
 require_once 'src/department.php';
 
-$pdo = connect();
-$departments = getAllDepartments($pdo);
+$department = new Department();
+$employee = new Employee();
+$departments = $department->getAllDepartments();
 
 if (!$departments) {
     $errorMessage = "There was an error retrieving departments";
 } 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $validationErrors = validateEmployee($pdo, $_POST);
+    $validationErrors = $employee->validateEmployee($_POST);
 
     if (!empty($validationErrors)) {
         $errorMessage = join(', ', $validationErrors);
     } else {
-        if (createEmployee($pdo, $_POST)) {
+        if ($employee->createEmployee($_POST)) {
             header('Location: index.php');
             exit;
         }

@@ -7,38 +7,44 @@
  * @version 1.0.0, December 2022
  */
 
-define('LOG_DIRECTORY', __DIR__ . '/../log'); 
-define('LOG_FILE_NAME',  LOG_DIRECTORY . '/log' . date('Ymd') . '.htm');
+class Logger {
 
-function logText(string|array ...$info): void 
-{
-    // If the logging directory does not exist, it is created
-    if (!is_dir(LOG_DIRECTORY)) {
-        if (!mkdir(LOG_DIRECTORY)) {
-            return;
+    private const LOG_DIRECTORY = __DIR__ . "/../log";
+    //define('LOG_DIRECTORY', __DIR__ . '/../log'); 
+    //define('LOG_FILE_NAME',  LOG_DIRECTORY . '/log' . date('Ymd') . '.htm');
+
+    public static function logText(string|array ...$info): void {
+        
+        $logFileName = Logger::LOG_DIRECTORY . "/log" . date("Ymd") . "htm";
+
+        // If the logging directory does not exist, it is created
+        if (!is_dir(self::LOG_DIRECTORY)) {
+            if (!mkdir(self::LOG_DIRECTORY)) {
+                return;
+            }
         }
-    }
 
-    $text = '';
-    if (!file_exists(LOG_FILE_NAME)) {
-        $text .= '<pre>';
-    }
-    $text .= '--- ' . date('Y-m-d h:i:s A', time()) . ' ---<br>';
-
-    // The name of the invoking file is displayed
-    if (count($bt = debug_backtrace()) > 1) {
-        $text .= 'FILE ' . $bt[1]['file'] . '<br>';
-    };        
-    
-    foreach ($info as $pieceOfInfo) {            
-        if (gettype($pieceOfInfo) === 'array') {
-            $text .= print_r($pieceOfInfo, true);
-        } else {
-            $text .= $pieceOfInfo . '<br>';
+        $text = '';
+        if (!file_exists($logFileName)) {
+            $text .= '<pre>';
         }
-    }
+        $text .= '--- ' . date('Y-m-d h:i:s A', time()) . ' ---<br>';
 
-    $logFile = fopen(LOG_FILE_NAME, 'a');
-    fwrite($logFile, $text);
-    fclose($logFile);
+        // The name of the invoking file is displayed
+        if (count($bt = debug_backtrace()) > 1) {
+            $text .= 'FILE ' . $bt[1]['file'] . '<br>';
+        };        
+        
+        foreach ($info as $pieceOfInfo) {            
+            if (gettype($pieceOfInfo) === 'array') {
+                $text .= print_r($pieceOfInfo, true);
+            } else {
+                $text .= $pieceOfInfo . '<br>';
+            }
+        }
+
+        $logFile = fopen($logFileName, 'a');
+        fwrite($logFile, $text);
+        fclose($logFile);
+    }
 }

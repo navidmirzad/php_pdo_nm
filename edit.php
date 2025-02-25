@@ -3,8 +3,9 @@
 require_once 'src/employee.php';
 require_once 'src/department.php';
 
-$pdo = connect();
-$departments = getAllDepartments($pdo);
+$deparment = new Department();
+$departments = $deparment->getAllDepartments();
+$emp = new Employee();
 
 if (!$departments) {
     $errorMessage = 'There was an error retrieving departments';
@@ -12,7 +13,7 @@ if (!$departments) {
 
 if (isset($_GET['id'])) {
     $employeeId = $_GET['id'];
-    $employee = getEmployeeById($pdo, $employeeId);
+    $employee = $emp->getEmployeeById($employeeId);
     if (!$employee) {
         $errorMessage = 'Employee not found';
     } else {
@@ -21,12 +22,12 @@ if (isset($_GET['id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $validationErrors = validateEmployee($_POST);
+    $validationErrors = $emp->validateEmployee($_POST);
     if (!empty($validationErrors)) {
         $errorMessage = join(', ', $validationErrors);
     } else {
         // Make sure to pass the employee id to the update function
-        if (updateEmployee($pdo, $_POST)) {
+        if ($emp->updateEmployee($_POST)) {
             header('Location: index.php');
             exit;
         }
