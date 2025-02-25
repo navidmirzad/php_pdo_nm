@@ -11,7 +11,7 @@ if (!$departments) {
 } 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $validationErrors = validateEmployee($_POST);
+    $validationErrors = validateEmployee($pdo, $_POST);
 
     if (!empty($validationErrors)) {
         $errorMessage = join(', ', $validationErrors);
