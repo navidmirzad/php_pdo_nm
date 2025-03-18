@@ -1,3 +1,17 @@
+<?php
+
+$current_page = basename($_SERVER['SCRIPT_NAME'], '.php');
+
+$page_titles = [
+    'index' => 'Company',
+    'departments' => 'Departments',
+    'employees' => 'Employees',
+    'projects' => 'Projects'
+];
+
+$header_title = $page_titles[$current_page] ?? 'Company';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +23,6 @@
 </head>
 <body>
 
-<header>
-<h1>Company</h1>
+<header style="display: flex; justify-content: center;">
+<h1><?php echo htmlspecialchars($header_title); ?></h1>
 </header>

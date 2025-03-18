@@ -1,7 +1,7 @@
 <?php
 
-require_once 'src/employee.php';
-require_once 'src/department.php';
+require_once '../src/employee.php';
+require_once '../src/department.php';
 
 $deparment = new Department();
 $departments = $deparment->getAllDepartments();
@@ -28,19 +28,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Make sure to pass the employee id to the update function
         if ($emp->updateEmployee($_POST)) {
-            header('Location: index.php');
+            header('Location: employees.php');
             exit;
         }
         $errorMessage = 'It was not possible to update the employee';
     }
 }
 
-include_once 'views/header.php';
+include_once '../views/header.php';
 
 ?>
 <nav>
     <ul>
-        <li><a href="index.php" title="Homepage">Homepage</a></li>
+        <li><a href="employees.php" title="Homepage">Homepage</a></li>
     </ul>
 </nav>
 <?php if (isset($errorMessage)): ?>
@@ -90,4 +90,4 @@ include_once 'views/header.php';
 <?php endif ?>
 </main>
 
-<?php include_once 'views/footer.php'; ?>
+<?php include_once '../views/footer.php'; ?>

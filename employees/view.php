@@ -3,11 +3,11 @@
 $employeeID = (int) ($_GET['id'] ?? 0);
 
 if ($employeeID === 0) {
-    header('Location: index.php');
+    header('Location: employees.php');
     exit;
 }
 
-require_once 'src/employee.php';
+require_once '../src/employee.php';
 
 $employee = new Employee();
 
@@ -19,11 +19,11 @@ if (!$employee) {
     $employee = $employee[0];
 }
 
-include_once 'views/header.php';
+include_once '../views/header.php';
 ?>
     <nav>
         <ul>
-            <li><a href="index.php" title="Homepage">Back</a></li>
+            <li><a href="employees.php" title="Homepage">Back</a></li>
         </ul>
     </nav>
     <main>
@@ -40,4 +40,4 @@ include_once 'views/header.php';
         <?php endif; ?>
     </main>
 
-<?php include_once 'views/footer.php'; ?>
+<?php include_once '../views/footer.php'; ?>
