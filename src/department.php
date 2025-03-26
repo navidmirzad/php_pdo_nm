@@ -18,7 +18,7 @@ class Department extends Database
         $sql = <<<SQL
             SELECT nDepartmentID, cName
             FROM department
-            ORDER BY cName
+            ORDER BY nDepartmentID
         SQL;
 
         try {
@@ -59,6 +59,39 @@ class Department extends Database
             return false;
         } catch (PDOException $e) {
             Logger::logText('Error getting departmentByID: ', $e->getMessage());
+            return false;
+        }
+    }
+
+        /**
+     * It retrieves departments from the database based
+     * on a text search on the departmentID or departmentName
+     * @param $searchText The text to search in the database
+     * @return An associative array with department information,
+     *         or false if there was an error
+     */
+    function searchDepartments(string $searchText): array|false
+    {
+
+        $pdo = $this->connect();
+
+        $sql = <<<SQL
+            SELECT nDepartmentID, cName
+            FROM department
+            WHERE nDepartmentID LIKE :departmentID
+               OR cName LIKE :departmentName
+            ORDER BY nDepartmentID, cName;
+        SQL;
+
+        try {
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':departmentID', "%$searchText%");
+            $stmt->bindValue(':departmentName', "%$searchText%");
+            $stmt->execute();
+
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            Logger::logText('Error searching for departments: ', $e);
             return false;
         }
     }
