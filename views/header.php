@@ -3,14 +3,26 @@
 $current_page = basename($_SERVER['SCRIPT_NAME'], '.php');
 
 $page_titles = [
-    'index' => 'Home',
+    'index'       => 'Home',
     'departments' => 'Departments',
-    'employees' => 'Employees',
-    'projects' => 'Projects'
+    'employees'   => 'Employees',
+    'projects'    => 'Projects'
 ];
 
-$header_title = $page_titles[$current_page] ?? 'Company';
-$browser_title = $page_titles[$current_page ?? 'KEA - PHP - Company'];
+$parent_directory = basename(dirname($_SERVER['SCRIPT_NAME']));
+
+if (array_key_exists($parent_directory, $page_titles)) {
+    if ($current_page !== 'index') {
+        $header_title  = rtrim($page_titles[$parent_directory]);
+        $browser_title = ucfirst($current_page);
+    } else {
+        $header_title  = $page_titles[$parent_directory];
+        $browser_title = $header_title;
+    }
+} else {
+    $header_title  = 'Company';
+    $browser_title = 'Company';
+}
 ?>
 
 <!DOCTYPE html>
