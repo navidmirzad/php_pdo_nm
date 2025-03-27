@@ -43,7 +43,7 @@ class Department extends Database
         $pdo = $this->connect();
         
         $sql = <<<SQL
-            SELECT cName
+            SELECT cName, nDepartmentID
             FROM department
             WHERE nDepartmentID = :departmentID;
         SQL;
@@ -63,7 +63,7 @@ class Department extends Database
         }
     }
 
-        /**
+    /**
      * It retrieves departments from the database based
      * on a text search on the departmentID or departmentName
      * @param $searchText The text to search in the database
@@ -95,5 +95,88 @@ class Department extends Database
             return false;
         }
     }
+
+    function validateDepartment($department): array|bool 
+    {
+        $departmentName = trim($department['cName'] ?? '');
+
+        $validationsErrors = [];
+
+        if ($departmentName === '') {
+            $validationsErrors[] = 'Department Name is mandatory';
+        }
+
+        return $validationsErrors;
+    }
+
+    function createDepartment(array $department): bool
+    {
+        $pdo = $this->connect();
+
+        $sql = <<<SQL
+            INSERT INTO department
+                (cName)
+            VALUES
+                (:cName)
+            SQL;
+
+        try {
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':cName', $department['cName']);
+            $stmt->execute();
+
+            return true;
+        } catch (PDOException $e) {
+            Logger::logText('Error inserting a new department: ', $e);
+            return false;
+        }
+    }
+
+    function updateDepartment(array $department): bool 
+    {
+        $pdo = $this->connect();
+
+        $sql = <<<SQL
+            UPDATE department
+            SET cName = :cName
+            WHERE nDepartmentID = :nDepartmentID
+        SQL;
+
+        try {
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':nDepartmentID', $department['nDepartmentID']);
+            $stmt->bindValue(':cName', $department['cName']);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            Logger::logText('Error updating department: ', $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Deletes an department record from the database.
+     * @param array $department An array where we get department on index [0] with an 'id' property.
+     * @return bool True on success, false on failure.
+     */
+    function deleteDepartment(int $departmentID): bool
+    {
+        $pdo = $this->connect();
+
+        $sql = <<<SQL
+            DELETE FROM department WHERE nDepartmentID = :departmentId
+        SQL;
+
+        try {
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':departmentId', $departmentID, PDO::PARAM_INT);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            Logger::logText('Error deleting department: ', $e->getMessage());
+            return false;
+        }
+    }
+
 }
-?>
+

@@ -11,6 +11,7 @@ if ($searchText === '') {
 } else {
     $employees = $employee->searchEmployees($searchText);
 }
+
 if (!$employees) {
     $errorMessage = 'There was an error while retrieving the list of employees.';
 }

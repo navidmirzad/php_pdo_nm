@@ -10,7 +10,6 @@ if ($employeeID === 0) {
 require_once '../src/employee.php';
 
 $employee = new Employee();
-
 $employee = $employee->getEmployeeByID($employeeID);
 
 if (!$employee) {
@@ -20,10 +19,11 @@ if (!$employee) {
 }
 
 include_once '../views/header.php';
+include_once '../views/navbar.php';
 ?>
     <nav>
         <ul>
-            <li><a href="employees.php" title="Homepage">Back</a></li>
+            <a href="employees.php" title="back">Back</a>
         </ul>
     </nav>
     <main>

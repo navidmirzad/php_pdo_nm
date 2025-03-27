@@ -13,12 +13,18 @@ if ($searchText === '') {
 }
 
 if (!$departments) {
-    $errorMessage = "Error retrieving departments.";
+    $errorMessage = "There was an error retrieving the list of departments.";
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST["id"])) {
+    $departmentID = $_POST['id'] ?? '';
+    $department = $department->deleteDepartment($departmentID);
+    header('Location: departments.php');
+    exit;
 }
 
 include_once '../views/header.php';
 include_once '../views/navbar.php';
-
 ?>
 
 <main style="padding-top: 4rem;";>
@@ -50,10 +56,10 @@ include_once '../views/navbar.php';
             <p><strong>Department Name: </strong><?= $department['cName'] ?></p>
             <br>
             <div style="display: flex; gap: 0.1rem;">
-                <button><a href="view.php?id=<?= $employee['nDepartmentID'] ?>" style="text-decoration: none;">View details</a></button>
-                <button><a href="edit.php?id=<?= $employee['nDepartmentID'] ?>" style="text-decoration: none;">Edit details</a></button>
+                <button><a href="view.php?id=<?= $department['nDepartmentID'] ?>" style="text-decoration: none;">View details</a></button>
+                <button><a href="edit.php?id=<?= $department['nDepartmentID'] ?>" style="text-decoration: none;">Edit details</a></button>
                 <form action="departments.php" method="POST">
-                    <input type="hidden" name="id" value="<?= $employee['nEmployeeID'] ?>">
+                    <input type="hidden" name="id" value="<?= $department['nDepartmentID'] ?>">
                     <button type="submit" style="background-color: red;">Delete</button>
                 </form>
             </div>

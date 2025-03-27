@@ -26,11 +26,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 include_once '../views/header.php';
+include_once '../views/navbar.php';
 
 ?>
     <nav>
         <ul>
-            <li><a href="employees.php" title="Homepage">Homepage</a></li>
+            <a href="employees.php" title="Back">Back</a>
         </ul>
     </nav>
     <?php if (isset($errorMessage)): ?>
@@ -64,7 +65,7 @@ include_once '../views/header.php';
                     </select>
                 </div>
                 <div>
-                    <button type="submit">Create new employee</button>
+                    <button type="submit">Create new Employee</button>
                 </div>
             </form>
         <?php endif; ?>
