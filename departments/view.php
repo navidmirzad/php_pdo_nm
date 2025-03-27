@@ -16,8 +16,8 @@ if (!$department) {
     $errorMessage = 'There was an error retrieving Department Information.';
 } 
 
-require_once '../views/header.php';
-require_once '../views/navbar.php';
+include_once '../views/header.php';
+include_once '../views/navbar.php';
 ?>
     <nav>
         <ul>
