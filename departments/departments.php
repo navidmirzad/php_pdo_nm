@@ -27,7 +27,7 @@ include_once '../views/header.php';
 include_once '../views/navbar.php';
 ?>
 
-<main style="padding-top: 4rem;";>
+<main style="padding-top: 4rem;">
     <?php if (isset($errorMessage)): ?>
     <section>
         <p class="error"><?= $errorMessage ?></p>
@@ -44,7 +44,7 @@ include_once '../views/navbar.php';
     <nav style="margin-left: auto;">
         <ul style="list-style: none; margin: 0; padding: 0;">
             <li style="display: inline;">
-                <button><a href="new.php" style="text-decoration: none";>Add department</a></button>
+                <button><a href="new.php" style="text-decoration: none";>Add Department</a></button>
             </li>
         </ul>
     </nav>
@@ -68,7 +68,5 @@ include_once '../views/navbar.php';
     </section>
     <?php endif; ?>
 </main>
-
-
 
 <?php include_once '../views/footer.php' ?>

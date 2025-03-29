@@ -119,7 +119,7 @@ class Department extends Database
         }
     }
 
-    function validateDepartment($department): array|bool 
+    function validateDepartment(object $department): array|bool 
     {
         $departmentName = trim($department['cName'] ?? '');
 
