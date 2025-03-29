@@ -63,6 +63,29 @@ class Department extends Database
         }
     }
 
+    function getEmployeesByDepartmentID(int $departmentID): array|false
+    {
+        $pdo = $this->connect();
+
+        $sql = <<<SQL
+            SELECT cFirstName, cLastName
+            FROM employee
+            WHERE nDepartmentID like :departmentID
+            ORDER BY cLastName, cFirstName;
+        SQL;
+
+        try {
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':departmentID', $departmentID, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            Logger::logText("Error retrieving employees by departmentID", $e->getMessage());
+            return false;
+        }
+    } 
+
     /**
      * It retrieves departments from the database based
      * on a text search on the departmentID or departmentName
