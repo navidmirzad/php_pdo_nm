@@ -53,14 +53,14 @@ include_once '../views/navbar.php';
         <section>
             <?php foreach ($projects as $project): ?>
             <article style="border: 2px solid black; border-radius: 1rem; padding: 1rem; margin-top: 1rem;">
-                <p><strong>Project ID: </strong><?= $project['nProjectID']; ?></p>
-                <p><strong>Project name:  </strong><?= $project['cName']; ?></p>
+                <p><strong>Project ID: </strong><?= $project['nProjectID'] ?></p>
+                <p><strong>Project name: </strong><?= $project['cName'] ?></p>
                 <br>
                 <div style="display: flex; gap: 0.1rem;">
-                    <button><a href="view.php?id<?= $project['nProjectID'] ?>" style="text-decoration: none;">View details</a></button>    
-                    <button><a href="edit.php?id<?= $project['nProjectID'] ?>" style="text-decoration: none;">Edit details</a></button>    
+                    <button><a href="view.php?id=<?= $project['nProjectID'] ?>" style="text-decoration: none;">View details</a></button>    
+                    <button><a href="edit.php?id=<?= $project['nProjectID'] ?>" style="text-decoration: none;">Edit details</a></button>    
                     <form action="projects.php" method="POST">
-                        <input type="hidden" id="id" value="<?= $project['nProjectID'] ?>">
+                        <input type="hidden" name="id" value="<?= $project['nProjectID'] ?>">
                         <button type="submit" style="background-color: red;">Delete</button>
                     </form>
                 </div>

@@ -43,20 +43,21 @@ include_once '../views/navbar.php';
         <p><strong>Department Name: </strong><?= $department['cName'] ?></p>
         
     <?php if (isset($employeeErrorMessage)): ?>
-            <p class="error"><?= $employeeErrorMessage ?></p>
-        <?php elseif (isset($employeeEmptyMessage)): ?>
-            <p><?= $employeeEmptyMessage ?></p>
-        <?php else: ?>
-            <h3>Employees in this department: </h3>
-                <ul>
-                    <?php foreach ($employees as $emp): ?>
-                        <li>
-                            <?= htmlspecialchars($emp['cLastName']. ' ' . $emp['cFirstName']); ?>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
-            <?php endif; ?>
+        <p class="error"><?= $employeeErrorMessage ?></p>
+    <?php elseif (isset($employeeEmptyMessage)): ?>
+        <br>
+        <p><?= $employeeEmptyMessage ?></p>
+    <?php else: ?>
+        <h3>Employees in this department: </h3>
+            <ul>
+                <?php foreach ($employees as $emp): ?>
+                    <li>
+                        <?= htmlspecialchars($emp['cLastName'] . ' ' . $emp['cFirstName']); ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
         <?php endif; ?>
-    </main>
+    <?php endif; ?>
+</main>
 
 <?php include_once '../views/footer.php'; ?>

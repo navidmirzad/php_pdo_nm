@@ -119,14 +119,14 @@ class Department extends Database
         }
     }
 
-    function validateDepartment(object $department): array|bool 
+    function validateDepartment(array $department): array|bool 
     {
         $departmentName = trim($department['cName'] ?? '');
 
         $validationsErrors = [];
 
         if ($departmentName === '') {
-            $validationsErrors[] = 'Department Name is mandatory';
+            $validationsErrors[] = 'Department name is mandatory';
         }
 
         return $validationsErrors;

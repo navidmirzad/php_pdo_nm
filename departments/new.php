@@ -4,7 +4,6 @@ require_once '../src/department.php';
 
 $departmentObj = new Department();
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $validationErrors = $departmentObj->validateDepartment($_POST);
 
@@ -35,6 +34,7 @@ include_once '../views/navbar.php';
             <p class="error"><?=$errorMessage ?></p>
         </section>
     <?php else: ?>
+        <h3>Add Department</h3>
         <form action="new.php" method="POST">
             <div>
                 <label for="txtDepartmentName">Department Name</label>

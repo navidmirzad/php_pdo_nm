@@ -64,6 +64,30 @@ class Employee extends Database
         }
     }
 
+    function getProjectsByEmployeeID(int $employeeID): array|false
+    {
+        $pdo = $this->connect();
+
+        $sql =<<<SQL
+            SELECT project.nProjectID, project.cName
+            FROM project
+            INNER JOIN emp_proy ON project.nProjectID = emp_proy.nProjectID
+            WHERE emp_proy.nEmployeeID = :employeeID;
+        SQL;
+
+
+        try {
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':employeeID', $employeeID,PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            Logger::LogText('Error retrieving employee projects.');
+            return false;
+        }
+    }
+
     /**
      * It retrieves information of an employee
      * @param $employeeID The ID of the employee
