@@ -59,7 +59,7 @@ class Project extends Database {
         $pdo = $this->connect();
 
         $sql = <<<SQL
-            SELECT employee.cLastName, employee.cFirstName, department.cName
+            SELECT employee.nEmployeeID, employee.cLastName, employee.cFirstName, department.cName
             FROM emp_proy
             JOIN employee ON emp_proy.nEmployeeID = employee.nEmployeeID
             JOIN department ON employee.nDepartmentID = department.nDepartmentID
@@ -77,6 +77,46 @@ class Project extends Database {
             return false;
         }
     }
+
+    function addEmployeeToProject(int $employeeID, int $projectID): bool 
+    {
+        $pdo = $this->connect();
+    
+        $sql = <<<SQL
+            INSERT INTO emp_proy (nEmployeeID, nProjectID)
+            VALUES (:employeeID, :projectID)
+        SQL;
+    
+        try {
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':employeeID', $employeeID);
+            $stmt->bindValue(':projectID', $projectID);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            Logger::logText('Error adding employee to project: ', $e->getMessage());
+            return false;
+        }
+    }
+    
+    function removeEmployeeFromProject(int $employeeID, int $projectID): bool {
+        $pdo = $this->connect();
+    
+        $sql = <<<SQL
+            DELETE FROM emp_proy
+            WHERE nEmployeeID = :employeeID AND nProjectID = :projectID
+        SQL;
+    
+        try {
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':employeeID', $employeeID);
+            $stmt->bindValue(':projectID', $projectID);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            Logger::logText('Error removing employee from project: ', $e->getMessage());
+            return false;
+        }
+    }
+    
 
     function searchProjects(string $searchText): array|false
     {
@@ -152,7 +192,7 @@ class Project extends Database {
         try {
             $stmt = $pdo->prepare($sql);
             $stmt->bindValue(':cName', $project['cName']);
-            $stmt->bindValue(':nProjectID', $project['projectID']);
+            $stmt->bindValue(':nProjectID', $project['nProjectID']);
 
             return $stmt->execute();
         } catch (PDOException $e) {
